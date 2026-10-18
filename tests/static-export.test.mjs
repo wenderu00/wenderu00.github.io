@@ -98,6 +98,14 @@ test("COLI Sense is not mentioned", () => {
   assert.doesNotMatch(html, /COLI|geotécnic/i);
 });
 
+test("location is Recife and the CTFL certification is not claimed", () => {
+  assert.ok(html.includes("RECIFE, PE"), "hero location");
+  assert.ok(html.includes("moro em Recife (PE)"), "about text");
+  assert.match(html, /<meta name="description" content="[^"]*Recife \(PE\)/);
+  assert.doesNotMatch(html, /Campina/);
+  assert.doesNotMatch(html, /CTFL|ISTQB/);
+});
+
 test("profile photo is exported and referenced", () => {
   assert.ok(existsSync(path.join(outDir, "foto-marcio.jpg")));
   assert.match(html, /src="\/foto-marcio\.jpg"/);
