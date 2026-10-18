@@ -130,7 +130,7 @@ export default function Home() {
         <section id="topo" className={`${container} flex scroll-mt-20 flex-wrap items-center gap-14 pt-[88px] pb-24`}>
           <div className="flex min-w-0 flex-[999_1_520px] flex-col gap-7">
             <p className="font-mono text-sm tracking-[0.04em] text-accent">
-              DESENVOLVEDOR FULL-STACK · CAMPINA GRANDE, PB
+              DESENVOLVEDOR FULL-STACK · RECIFE, PE
             </p>
             <h1 className="font-display text-[clamp(48px,7vw,92px)] leading-[0.98] font-extrabold tracking-[-0.03em]">Márcio Wendell</h1>
             <p className="max-w-[620px] text-[21px] leading-normal text-ink-soft">
@@ -162,7 +162,7 @@ export default function Home() {
             <SectionTitle index="01">Quem sou eu?</SectionTitle>
             <div className="flex max-w-[820px] flex-col gap-5 text-ink-soft">
               <p>
-                Sou desenvolvedor full-stack, moro em Campina Grande (PB) e curso Sistemas de Informação no Centro de
+                Sou desenvolvedor full-stack, moro em Recife (PE) e curso Sistemas de Informação no Centro de
                 Informática da UFPE. Meu ponto mais forte é o front-end com Next.js e Tailwind, e venho ampliando de
                 forma consistente o back-end e a qualidade de software.
               </p>

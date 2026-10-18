@@ -39,7 +39,6 @@ export type ProjectLink = { label: string; href: string };
 
 export const highlights = [
   { label: "Formação", value: "Sistemas de Informação, CIn/UFPE" },
-  { label: "Em formação", value: "Certificação CTFL (ISTQB)" },
   { label: "Objetivo", value: "Arquiteto de software especialista" },
 ];
 

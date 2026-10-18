@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://wenderu00.github.io"),
   title: "Márcio Wendell · Portfólio",
   description:
-    "Desenvolvedor full-stack em Campina Grande (PB). Sistemas web de ponta a ponta, do Next.js ao banco de dados, com foco em testes e arquitetura.",
+    "Desenvolvedor full-stack em Recife (PE). Sistemas web de ponta a ponta, do Next.js ao banco de dados, com foco em testes e arquitetura.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
