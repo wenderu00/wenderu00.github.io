@@ -42,9 +42,13 @@ test("contact links are real and LinkedIn is not shown yet", () => {
 });
 
 test("projects are listed", () => {
-  for (const name of ["BioQuest", "COLI Sense", "mutcli", "XPomodoro", "prova-cli", "SpatialDev"]) {
+  for (const name of ["BioQuest", "mutcli", "XPomodoro", "prova-cli", "SpatialDev"]) {
     assert.ok(html.includes(name), name);
   }
+});
+
+test("COLI Sense is not mentioned", () => {
+  assert.doesNotMatch(html, /COLI|geotécnic/i);
 });
 
 test("profile photo is exported and referenced", () => {

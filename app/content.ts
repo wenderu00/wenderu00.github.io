@@ -79,18 +79,6 @@ export const featuredProjects = [
     ],
     tech: "Next.js · NestJS · Playwright · Docker · GitLab CI · Nomad",
   },
-  {
-    kicker: "IOT INDUSTRIAL · ARQUITETURA",
-    title: "COLI Sense",
-    summary:
-      "MVP de plataforma de monitoramento e telemetria geotécnica, pensado para contratação por licitação pública.",
-    points: [
-      "Arquitetura do produto como único desenvolvedor responsável.",
-      "Proposta técnico-comercial elaborada para concorrer no mercado de monitoramento geotécnico.",
-      "Especificação de controle de acesso em BDD: 5 perfis por 5 módulos, com cenários em playwright-bdd.",
-    ],
-    tech: "IoT · RBAC · BDD/Gherkin · Proposta técnica",
-  },
 ];
 
 export const otherProjects = [
