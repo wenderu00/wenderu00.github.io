@@ -7,6 +7,7 @@ import {
   otherProjects,
   services,
   stack,
+  type ProjectLink,
   type ServiceIcon,
 } from "./content";
 
@@ -68,37 +69,65 @@ function SecondaryLink({ href, children }: { href: string; children: ReactNode }
   );
 }
 
+function ProjectLinks({ links }: { links?: ProjectLink[] }) {
+  if (!links) return null;
+  return (
+    <div className="flex flex-wrap gap-2">
+      {links.map((link) => (
+        <a
+          key={link.href}
+          href={link.href}
+          className="inline-flex min-h-11 items-center rounded-md border border-line-strong px-4 font-mono text-sm text-ink no-underline hover:border-accent hover:text-accent"
+        >
+          {link.label} ↗
+        </a>
+      ))}
+    </div>
+  );
+}
+
 function SectionTitle({ index, children }: { index: string; children: ReactNode }) {
   return (
-    <>
-      <p className="mb-2 font-mono text-sm text-accent">{index}</p>
-      <h2 className="font-display text-[44px] leading-[1.05] font-bold tracking-[-0.02em]">{children}</h2>
-    </>
+    <div className="flex flex-col gap-2">
+      <p className="flex items-center gap-4 font-mono text-sm text-accent">
+        {index}
+        <span aria-hidden="true" className="h-px flex-1 bg-line" />
+      </p>
+      <h2 className="font-display text-[clamp(36px,5vw,52px)] leading-[1.05] font-bold tracking-[-0.02em]">
+        {children}
+      </h2>
+    </div>
   );
 }
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-ground text-ink">
-      <header className={`${container} flex flex-wrap items-center justify-between gap-4 border-b border-line py-6`}>
-        <a href="#topo" className="font-mono text-[15px] text-ink no-underline">
-          márcio<span className="text-accent">.</span>wendell
-        </a>
-        <nav aria-label="Seções" className="flex flex-wrap gap-2">
-          {navItems.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              className="p-3 font-mono text-sm text-ink-muted no-underline hover:text-accent"
-            >
-              {item.label}
-            </a>
-          ))}
-        </nav>
+      <header className="sticky top-0 z-10 border-b border-line bg-ground/85 backdrop-blur">
+        <div className={`${container} flex flex-wrap items-center justify-between gap-x-4 gap-y-2 py-3`}>
+          <a
+            href="#topo"
+            aria-label="Márcio Wendell, início"
+            className="inline-flex min-h-11 items-center bg-accent px-3 font-display text-xl font-extrabold text-ground no-underline"
+          >
+            MW
+          </a>
+          <nav aria-label="Seções" className="flex flex-wrap gap-1">
+            {navItems.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className="p-3 font-mono text-sm text-ink-muted no-underline hover:text-accent"
+              >
+                {item.label}
+              </a>
+            ))}
+          </nav>
+        </div>
       </header>
 
       <main>
-        <section id="topo" className={`${container} flex flex-wrap items-center gap-14 pt-[88px] pb-24`}>
+        <section id="topo" className={`${container} flex scroll-mt-20 flex-wrap items-center gap-14 pt-[88px] pb-24`}>
           <div className="flex min-w-0 flex-[999_1_520px] flex-col gap-7">
             <p className="font-mono text-sm tracking-[0.04em] text-accent">
               DESENVOLVEDOR FULL-STACK · CAMPINA GRANDE, PB
@@ -111,7 +140,7 @@ export default function Home() {
             <p className="text-base text-ink-muted">Graduando em Sistemas de Informação no CIn/UFPE</p>
             <div className="flex flex-wrap gap-3 pt-2">
               <PrimaryLink href="#trabalhos">Ver trabalhos</PrimaryLink>
-              <SecondaryLink href={`mailto:${contact.email}`}>{contact.email}</SecondaryLink>
+              <SecondaryLink href={`mailto:${contact.email}`}>E-mail</SecondaryLink>
               <SecondaryLink href={contact.github}>GitHub</SecondaryLink>
             </div>
           </div>
@@ -122,18 +151,16 @@ export default function Home() {
               width={720}
               height={828}
               priority
-              className="block aspect-[720/828] h-auto w-full rounded-[10px] border border-line object-cover"
+              className="block aspect-[720/828] h-auto w-full border-4 border-accent object-cover"
             />
             <p className="mt-3 font-mono text-[13px] text-ink-muted">{"// disponível para projetos full-stack"}</p>
           </div>
         </section>
 
-        <section id="quem-sou" className="border-t border-line">
-          <div className={`${container} flex flex-wrap gap-12 py-[88px]`}>
-            <div className="flex-[1_1_260px]">
-              <SectionTitle index="01">Quem sou eu?</SectionTitle>
-            </div>
-            <div className="flex min-w-0 flex-[999_1_560px] flex-col gap-5 text-ink-soft">
+        <section id="quem-sou" className="scroll-mt-20 border-t border-line">
+          <div className={`${container} flex flex-col gap-10 py-[88px]`}>
+            <SectionTitle index="01">Quem sou eu?</SectionTitle>
+            <div className="flex max-w-[820px] flex-col gap-5 text-ink-soft">
               <p>
                 Sou desenvolvedor full-stack, moro em Campina Grande (PB) e curso Sistemas de Informação no Centro de
                 Informática da UFPE. Meu ponto mais forte é o front-end com Next.js e Tailwind, e venho ampliando de
@@ -150,35 +177,31 @@ export default function Home() {
                 &quot;semeadura&quot;: investir esforço em artefatos reutilizáveis (testes, guias de arquitetura,
                 pipelines e geradores) que continuam gerando valor sem custo recorrente.
               </p>
-              <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-3 pt-3">
-                {highlights.map((item) => (
-                  <div key={item.label} className="rounded-lg border border-line bg-surface p-5">
-                    <p className="font-mono text-[13px] text-ink-muted">{item.label}</p>
-                    <p className="mt-1.5 font-semibold text-ink">{item.value}</p>
-                  </div>
-                ))}
-              </div>
+            </div>
+            <div className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-3">
+              {highlights.map((item) => (
+                <div key={item.label} className="rounded-lg border border-line bg-surface p-5">
+                  <p className="font-mono text-[13px] text-ink-muted">{item.label}</p>
+                  <p className="mt-1.5 font-semibold text-ink">{item.value}</p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
 
-        <section id="o-que-faco" className="border-t border-line bg-band">
-          <div className={`${container} flex flex-col gap-12 py-[88px]`}>
-            <div className="flex flex-wrap gap-12">
-              <div className="flex-[1_1_260px]">
-                <SectionTitle index="02">O que faço?</SectionTitle>
-              </div>
-              <p className="min-w-0 flex-[999_1_560px] text-ink-soft">
-                Atuo como desenvolvedor full-stack (PJ) na JOIN Tecnologia, alocado no time da Secretaria de
-                Desenvolvimento Tecnológico de Pernambuco, onde cuido de sistemas da Secretaria da Mulher. Em paralelo,
-                sou cofundador e responsável técnico da BioQuest.
-              </p>
-            </div>
+        <section id="o-que-faco" className="scroll-mt-20 border-t border-line bg-band">
+          <div className={`${container} flex flex-col gap-10 py-[88px]`}>
+            <SectionTitle index="02">O que faço?</SectionTitle>
+            <p className="max-w-[820px] text-ink-soft">
+              Atuo como desenvolvedor full-stack (PJ) na JOIN Tecnologia, alocado no time da Secretaria de
+              Desenvolvimento Tecnológico de Pernambuco, onde cuido de sistemas da Secretaria da Mulher. Em paralelo,
+              sou cofundador e responsável técnico da BioQuest.
+            </p>
             <div className="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-4">
               {services.map((service) => (
                 <div
                   key={service.title}
-                  className="flex flex-col gap-3 rounded-[10px] border border-line bg-ground p-7"
+                  className="flex flex-col gap-3 rounded-[10px] border border-line bg-surface p-7"
                 >
                   <svg
                     aria-hidden="true"
@@ -199,42 +222,52 @@ export default function Home() {
                 </div>
               ))}
             </div>
-            <div className="flex flex-col gap-3.5">
+            <div className="flex flex-col gap-5">
               <p className="font-mono text-[13px] text-ink-muted">STACK</p>
-              <ul aria-label="Tecnologias" className="flex flex-wrap gap-2 font-mono text-sm">
-                {stack.map((tech) => (
-                  <li key={tech} className="rounded-full border border-line-strong px-3.5 py-2">
-                    {tech}
-                  </li>
+              <div className="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-6">
+                {stack.map((group) => (
+                  <div key={group.group} className="flex flex-col gap-3">
+                    <h3 className="font-display text-lg font-bold">{group.group}</h3>
+                    <ul aria-label={group.group} className="flex flex-wrap gap-2 font-mono text-sm">
+                      {group.items.map((tech) => (
+                        <li key={tech} className="rounded-full border border-line-strong px-3.5 py-2">
+                          {tech}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
           </div>
         </section>
 
-        <section id="trabalhos" className="border-t border-line">
+        <section id="trabalhos" className="scroll-mt-20 border-t border-line">
           <div className={`${container} flex flex-col gap-10 py-[88px]`}>
-            <div>
-              <SectionTitle index="03">Trabalhos já feitos</SectionTitle>
-            </div>
+            <SectionTitle index="03">Trabalhos já feitos</SectionTitle>
 
             {featuredProjects.map((project) => (
               <article
                 key={project.title}
-                className="flex flex-wrap gap-8 rounded-xl border border-line bg-surface p-9"
+                className="flex flex-col gap-6 rounded-xl border border-line bg-surface p-[clamp(24px,4vw,40px)]"
               >
-                <div className="flex flex-[1_1_280px] flex-col gap-2.5">
+                <div className="flex flex-col gap-2">
                   <p className="font-mono text-[13px] text-accent">{project.kicker}</p>
-                  <h3 className="font-display text-[34px] font-extrabold tracking-[-0.02em]">{project.title}</h3>
-                  <p className="text-base text-ink-muted">{project.summary}</p>
+                  <h3 className="font-display text-[clamp(28px,3.5vw,36px)] leading-tight font-extrabold tracking-[-0.02em]">
+                    {project.title}
+                  </h3>
                 </div>
-                <div className="flex min-w-0 flex-[999_1_520px] flex-col gap-3.5 text-ink-soft">
-                  <ul className="flex list-disc flex-col gap-2 pl-5">
-                    {project.points.map((point) => (
-                      <li key={point}>{point}</li>
-                    ))}
-                  </ul>
-                  <p className="font-mono text-[13px] text-ink-muted">{project.tech}</p>
+                <div className="flex flex-wrap gap-x-10 gap-y-5">
+                  <p className="flex-[1_1_280px] text-base text-ink-muted">{project.summary}</p>
+                  <div className="flex min-w-0 flex-[999_1_520px] flex-col gap-4 text-ink-soft">
+                    <ul className="flex list-disc flex-col gap-2 pl-5 marker:text-accent">
+                      {project.points.map((point) => (
+                        <li key={point}>{point}</li>
+                      ))}
+                    </ul>
+                    <p className="font-mono text-[13px] text-ink-muted">{project.tech}</p>
+                    <ProjectLinks links={project.links} />
+                  </div>
                 </div>
               </article>
             ))}
@@ -246,6 +279,7 @@ export default function Home() {
                   <h3 className="font-display text-2xl font-bold">{project.title}</h3>
                   <p className="text-base text-ink-soft">{project.text}</p>
                   <p className="mt-auto pt-2 font-mono text-[13px] text-ink-muted">{project.tech}</p>
+                  <ProjectLinks links={project.links} />
                 </article>
               ))}
             </div>
@@ -258,6 +292,9 @@ export default function Home() {
           <div className="flex flex-col gap-3">
             <h2 className="font-display text-[40px] font-bold tracking-[-0.02em]">Vamos conversar?</h2>
             <p className="text-ink-muted">Aberto a oportunidades full-stack, projetos e parcerias.</p>
+            <a href={`mailto:${contact.email}`} className="font-mono text-accent underline-offset-4 hover:underline">
+              {contact.email}
+            </a>
           </div>
           <div className="flex flex-wrap gap-3">
             <PrimaryLink href={`mailto:${contact.email}`}>Enviar e-mail</PrimaryLink>

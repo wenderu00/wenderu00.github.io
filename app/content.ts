@@ -29,23 +29,13 @@ export const services: { icon: ServiceIcon; title: string; text: string }[] = [
 ];
 
 export const stack = [
-  "Next.js",
-  "React",
-  "TypeScript",
-  "Tailwind CSS",
-  "NestJS",
-  "Effect-TS",
-  "PostgreSQL",
-  "Supabase",
-  "Elixir / Phoenix",
-  "Python",
-  "Playwright",
-  "Stryker",
-  "Docker",
-  "GitLab CI",
-  "GitHub Actions",
-  "n8n",
+  { group: "Front-end", items: ["Next.js", "React", "TypeScript", "Tailwind CSS"] },
+  { group: "Back-end", items: ["NestJS", "Effect-TS", "PostgreSQL", "Supabase", "Elixir / Phoenix", "Python"] },
+  { group: "Qualidade", items: ["Playwright", "Stryker"] },
+  { group: "Infra/CI", items: ["Docker", "GitLab CI", "GitHub Actions", "n8n"] },
 ];
+
+export type ProjectLink = { label: string; href: string };
 
 export const highlights = [
   { label: "Formação", value: "Sistemas de Informação, CIn/UFPE" },
@@ -53,7 +43,14 @@ export const highlights = [
   { label: "Objetivo", value: "Arquiteto de software especialista" },
 ];
 
-export const featuredProjects = [
+export const featuredProjects: {
+  kicker: string;
+  title: string;
+  summary: string;
+  points: string[];
+  tech: string;
+  links?: ProjectLink[];
+}[] = [
   {
     kicker: "PRODUTO PRÓPRIO · COFUNDADOR",
     title: "BioQuest",
@@ -66,6 +63,21 @@ export const featuredProjects = [
       "Pipeline de CI/CD no GitHub Actions e guias de arquitetura (CLAUDE.md) para desenvolvimento assistido por IA.",
     ],
     tech: "Next.js · Effect-TS · PostgreSQL · playwright-bdd · Stryker · Artillery",
+  },
+  {
+    kicker: "IA NO DESENVOLVIMENTO · CÓDIGO ABERTO",
+    title: "Semeadura de agentes",
+    summary:
+      "Plugins do Claude Code com times de subagentes que levam um pedido em texto livre até requisitos formais e testes E2E.",
+    points: [
+      "requisitos-pipeline: 7 subagentes transformam texto livre em user stories, casos de uso, regras de negócio e RNFs em YAML, com auditoria e validação por schema.",
+      "bdd-e2e-tester: 6 subagentes transformam os cartões do requisitos-pipeline em testes E2E BDD (Gherkin, Page Objects e Playwright), sem inventar seletores.",
+    ],
+    tech: "Claude Code · Subagentes · YAML · Gherkin · Playwright",
+    links: [
+      { label: "requisitos-pipeline", href: "https://github.com/wenderu00/requisitos-pipeline" },
+      { label: "bdd-e2e-tester", href: "https://github.com/wenderu00/bdd-e2e-tester" },
+    ],
   },
   {
     kicker: "SETOR PÚBLICO · JOIN TECNOLOGIA",
@@ -81,7 +93,13 @@ export const featuredProjects = [
   },
 ];
 
-export const otherProjects = [
+export const otherProjects: {
+  kicker: string;
+  title: string;
+  text: string;
+  tech: string;
+  links?: ProjectLink[];
+}[] = [
   {
     kicker: "FERRAMENTA",
     title: "mutcli",
@@ -91,8 +109,12 @@ export const otherProjects = [
   {
     kicker: "APP PESSOAL",
     title: "XPomodoro",
-    text: "Timer Pomodoro com ciclos de XP e revisão de desempenho, modelado com DDD.",
-    tech: "Elixir · Phoenix LiveView · Ecto · Oban",
+    text: "Timer pomodoro com o ciclo de feedback do Extreme Programming: feedback por ciclo, retrospectiva e XP.",
+    tech: "React · TypeScript",
+    links: [
+      { label: "Código", href: "https://github.com/wenderu00/XPomodoro" },
+      { label: "Ver online", href: "https://wenderu00.github.io/XPomodoro/" },
+    ],
   },
   {
     kicker: "CLI DE ESTUDOS",
@@ -101,16 +123,14 @@ export const otherProjects = [
     tech: "TypeScript · Node.js · SM-2",
   },
   {
-    kicker: "IA NO DESENVOLVIMENTO",
-    title: "Semeadura de agentes",
-    text: "Fluxo de trabalho com Claude Code e um time de agentes que classifica e formaliza requisitos (user stories, regras de negócio, RNFs).",
-    tech: "Claude Code · Skills · MCP · ADRs",
-  },
-  {
     kicker: "JOGO WEB",
-    title: "RTS no navegador",
-    text: "Jogo de estratégia em tempo real feito com DOM puro, com unidades de exército e sistema de batalha em game loop.",
-    tech: "JavaScript · HTML/CSS",
+    title: "The Galadur",
+    text: "Jogo incremental de estratégia medieval no navegador, com engine em TypeScript puro separada da UI e testada.",
+    tech: "TypeScript · Vitest · Playwright",
+    links: [
+      { label: "Código", href: "https://github.com/wenderu00/the-galadur" },
+      { label: "Jogar online", href: "https://wenderu00.github.io/the-galadur/" },
+    ],
   },
   {
     kicker: "EXPLORAÇÃO",
