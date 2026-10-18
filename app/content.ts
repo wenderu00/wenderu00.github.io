@@ -1,6 +1,7 @@
 export const contact = {
   email: "marcio.wendell.contact@gmail.com",
   github: "https://github.com/wenderu00",
+  youtube: "https://www.youtube.com/@MW_JS_Testing",
 };
 
 export type ServiceIcon = "terminal" | "shield" | "flow" | "spark";

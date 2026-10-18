@@ -1,5 +1,6 @@
 import Image from "next/image";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
+import { ConsoleGreeting } from "./console-greeting";
 import {
   contact,
   featuredProjects,
@@ -10,14 +11,14 @@ import {
   type ProjectLink,
   type ServiceIcon,
 } from "./content";
+import { SectionNav } from "./section-nav";
 
 const container = "mx-auto max-w-[1200px] px-6";
 
-const navItems = [
-  { href: "#quem-sou", label: "01 Quem sou eu" },
-  { href: "#o-que-faco", label: "02 O que faço" },
-  { href: "#trabalhos", label: "03 Trabalhos" },
-];
+const availability = "// disponível para projetos full-stack";
+
+const delay = (ms: number) => ({ "--d": `${ms}ms` }) as CSSProperties;
+const stagger = (index: number) => ({ "--i": index }) as CSSProperties;
 
 const iconPaths: Record<ServiceIcon, ReactNode> = {
   terminal: (
@@ -51,7 +52,7 @@ function PrimaryLink({ href, children }: { href: string; children: ReactNode }) 
   return (
     <a
       href={href}
-      className="inline-flex min-h-12 items-center rounded-md bg-accent px-6 font-semibold text-ground no-underline hover:bg-accent-hover"
+      className="inline-flex min-h-12 items-center rounded-md bg-accent px-6 font-semibold text-ground no-underline transition-colors duration-200 hover:bg-accent-hover"
     >
       {children}
     </a>
@@ -62,7 +63,7 @@ function SecondaryLink({ href, children }: { href: string; children: ReactNode }
   return (
     <a
       href={href}
-      className="inline-flex min-h-12 items-center rounded-md border border-line-strong px-5 font-medium text-ink no-underline hover:border-accent"
+      className="inline-flex min-h-12 items-center rounded-md border border-line-strong px-5 font-medium text-ink no-underline transition-colors duration-200 hover:border-accent hover:text-accent"
     >
       {children}
     </a>
@@ -77,7 +78,7 @@ function ProjectLinks({ links }: { links?: ProjectLink[] }) {
         <a
           key={link.href}
           href={link.href}
-          className="inline-flex min-h-11 items-center rounded-md border border-line-strong px-4 font-mono text-sm text-ink no-underline hover:border-accent hover:text-accent"
+          className="inline-flex min-h-11 items-center rounded-md border border-line-strong px-4 font-mono text-sm text-ink no-underline transition-colors duration-200 hover:border-accent hover:text-accent"
         >
           {link.label} ↗
         </a>
@@ -88,7 +89,7 @@ function ProjectLinks({ links }: { links?: ProjectLink[] }) {
 
 function SectionTitle({ index, children }: { index: string; children: ReactNode }) {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="reveal flex flex-col gap-2">
       <p className="flex items-center gap-4 font-mono text-sm text-accent">
         {index}
         <span aria-hidden="true" className="h-px flex-1 bg-line" />
@@ -103,6 +104,13 @@ function SectionTitle({ index, children }: { index: string; children: ReactNode 
 export default function Home() {
   return (
     <div className="min-h-screen bg-ground text-ink">
+      <ConsoleGreeting />
+      <a
+        href="#conteudo"
+        className="sr-only z-20 bg-accent px-4 py-3 font-semibold text-ground focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+      >
+        Pular para o conteúdo
+      </a>
       <header className="sticky top-0 z-10 border-b border-line bg-ground/85 backdrop-blur">
         <div className={`${container} flex flex-wrap items-center justify-between gap-x-4 gap-y-2 py-3`}>
           <a
@@ -112,39 +120,30 @@ export default function Home() {
           >
             MW
           </a>
-          <nav aria-label="Seções" className="flex flex-wrap gap-1">
-            {navItems.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                className="p-3 font-mono text-sm text-ink-muted no-underline hover:text-accent"
-              >
-                {item.label}
-              </a>
-            ))}
-          </nav>
+          <SectionNav />
         </div>
       </header>
 
-      <main>
+      <main id="conteudo">
         <section id="topo" className={`${container} flex scroll-mt-20 flex-wrap items-center gap-14 pt-[88px] pb-24`}>
           <div className="flex min-w-0 flex-[999_1_520px] flex-col gap-7">
-            <p className="font-mono text-sm tracking-[0.04em] text-accent">
+            <p className="hero-rise font-mono text-sm tracking-[0.04em] text-accent">
               DESENVOLVEDOR FULL-STACK · RECIFE, PE
             </p>
-            <h1 className="font-display text-[clamp(48px,7vw,92px)] leading-[0.98] font-extrabold tracking-[-0.03em]">Márcio Wendell</h1>
-            <p className="max-w-[620px] text-[21px] leading-normal text-ink-soft">
+            <h1 className="hero-lift font-display text-[clamp(48px,7vw,92px)] leading-[0.98] font-extrabold tracking-[-0.03em]">Márcio Wendell</h1>
+            <p style={delay(150)} className="hero-rise max-w-[620px] text-[21px] leading-normal text-ink-soft">
               Construo sistemas web de ponta a ponta, do Next.js ao banco de dados, com uma obsessão saudável por
               testes, arquitetura bem documentada e código que continua fácil de mudar.
             </p>
-            <p className="text-base text-ink-muted">Graduando em Sistemas de Informação no CIn/UFPE</p>
-            <div className="flex flex-wrap gap-3 pt-2">
+            <p style={delay(250)} className="hero-rise text-base text-ink-muted">Graduando em Sistemas de Informação no CIn/UFPE</p>
+            <div style={delay(350)} className="hero-rise flex flex-wrap gap-3 pt-2">
               <PrimaryLink href="#trabalhos">Ver trabalhos</PrimaryLink>
               <SecondaryLink href={`mailto:${contact.email}`}>E-mail</SecondaryLink>
               <SecondaryLink href={contact.github}>GitHub</SecondaryLink>
+              <SecondaryLink href={contact.youtube}>YouTube</SecondaryLink>
             </div>
           </div>
-          <div className="relative max-w-[400px] flex-[1_1_300px]">
+          <div style={delay(450)} className="hero-rise relative max-w-[400px] flex-[1_1_300px]">
             <Image
               src="/foto-marcio.jpg"
               alt="Foto de Márcio Wendell"
@@ -153,7 +152,12 @@ export default function Home() {
               priority
               className="block aspect-[720/828] h-auto w-full border-4 border-accent object-cover"
             />
-            <p className="mt-3 font-mono text-[13px] text-ink-muted">{"// disponível para projetos full-stack"}</p>
+            <p
+              style={{ "--chars": availability.length } as CSSProperties}
+              className="typing mt-3 text-[13px] text-ink-muted"
+            >
+              {availability}
+            </p>
           </div>
         </section>
 
@@ -179,8 +183,8 @@ export default function Home() {
               </p>
             </div>
             <div className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-3">
-              {highlights.map((item) => (
-                <div key={item.label} className="rounded-lg border border-line bg-surface p-5">
+              {highlights.map((item, i) => (
+                <div key={item.label} style={stagger(i)} className="reveal rounded-lg border border-line bg-surface p-5">
                   <p className="font-mono text-[13px] text-ink-muted">{item.label}</p>
                   <p className="mt-1.5 font-semibold text-ink">{item.value}</p>
                 </div>
@@ -198,10 +202,11 @@ export default function Home() {
               sou cofundador e responsável técnico da BioQuest.
             </p>
             <div className="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-4">
-              {services.map((service) => (
+              {services.map((service, i) => (
                 <div
                   key={service.title}
-                  className="flex flex-col gap-3 rounded-[10px] border border-line bg-surface p-7"
+                  style={stagger(i)}
+                  className="reveal flex flex-col gap-3 rounded-[10px] border border-line bg-surface p-7 transition duration-200 hover:-translate-y-1 hover:border-accent"
                 >
                   <svg
                     aria-hidden="true"
@@ -225,8 +230,8 @@ export default function Home() {
             <div className="flex flex-col gap-5">
               <p className="font-mono text-[13px] text-ink-muted">STACK</p>
               <div className="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-6">
-                {stack.map((group) => (
-                  <div key={group.group} className="flex flex-col gap-3">
+                {stack.map((group, i) => (
+                  <div key={group.group} style={stagger(i)} className="reveal flex flex-col gap-3">
                     <h3 className="font-display text-lg font-bold">{group.group}</h3>
                     <ul aria-label={group.group} className="flex flex-wrap gap-2 font-mono text-sm">
                       {group.items.map((tech) => (
@@ -249,7 +254,7 @@ export default function Home() {
             {featuredProjects.map((project) => (
               <article
                 key={project.title}
-                className="flex flex-col gap-6 rounded-xl border border-line bg-surface p-[clamp(24px,4vw,40px)]"
+                className="reveal flex flex-col gap-6 rounded-xl border border-line bg-surface p-[clamp(24px,4vw,40px)] transition-colors duration-200 hover:border-accent"
               >
                 <div className="flex flex-col gap-2">
                   <p className="font-mono text-[13px] text-accent">{project.kicker}</p>
@@ -273,8 +278,12 @@ export default function Home() {
             ))}
 
             <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-4">
-              {otherProjects.map((project) => (
-                <article key={project.title} className="flex flex-col gap-2.5 rounded-xl border border-line p-7">
+              {otherProjects.map((project, i) => (
+                <article
+                  key={project.title}
+                  style={stagger(i % 3)}
+                  className="reveal flex flex-col gap-2.5 rounded-xl border border-line p-7 transition duration-200 hover:-translate-y-1 hover:border-accent"
+                >
                   <p className="font-mono text-[13px] text-accent">{project.kicker}</p>
                   <h3 className="font-display text-2xl font-bold">{project.title}</h3>
                   <p className="text-base text-ink-soft">{project.text}</p>
@@ -292,13 +301,14 @@ export default function Home() {
           <div className="flex flex-col gap-3">
             <h2 className="font-display text-[40px] font-bold tracking-[-0.02em]">Vamos conversar?</h2>
             <p className="text-ink-muted">Aberto a oportunidades full-stack, projetos e parcerias.</p>
-            <a href={`mailto:${contact.email}`} className="font-mono text-accent underline-offset-4 hover:underline">
+            <a href={`mailto:${contact.email}`} className="font-mono text-accent underline-offset-4 transition-colors duration-200 hover:text-accent-hover hover:underline">
               {contact.email}
             </a>
           </div>
           <div className="flex flex-wrap gap-3">
             <PrimaryLink href={`mailto:${contact.email}`}>Enviar e-mail</PrimaryLink>
             <SecondaryLink href={contact.github}>GitHub</SecondaryLink>
+            <SecondaryLink href={contact.youtube}>YouTube</SecondaryLink>
           </div>
         </div>
       </footer>
