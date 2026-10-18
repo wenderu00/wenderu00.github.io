@@ -107,11 +107,11 @@ export default function Home() {
       <ConsoleGreeting />
       <a
         href="#conteudo"
-        className="sr-only z-20 bg-accent px-4 py-3 font-semibold text-ground focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+        className="sr-only z-20 bg-accent px-4 py-3 font-semibold text-ground focus:not-sr-only focus:fixed focus:top-[calc(env(safe-area-inset-top)+0.75rem)] focus:left-3"
       >
         Pular para o conteúdo
       </a>
-      <header className="sticky top-0 z-10 border-b border-line bg-ground/85 backdrop-blur">
+      <header className="sticky top-0 z-10 border-b border-line bg-ground pt-[env(safe-area-inset-top)]">
         <div className={`${container} flex flex-wrap items-center justify-between gap-x-4 gap-y-2 py-3`}>
           <a
             href="#topo"
