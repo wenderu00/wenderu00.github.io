@@ -25,3 +25,75 @@ body {
   font-size: 17px;
   line-height: 1.6;
 }
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-ground);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.typing {
+  display: inline-block;
+  font-family: var(--font-mono);
+  white-space: nowrap;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+
+@keyframes lift {
+  from {
+    transform: translateY(32px);
+  }
+}
+
+@keyframes type {
+  from {
+    width: 0;
+  }
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  .hero-rise {
+    animation: rise 600ms cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0ms) both;
+  }
+
+  .hero-lift {
+    animation: lift 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  .typing {
+    overflow: hidden;
+    width: calc(var(--chars) * 1ch + 0.6ch);
+    border-right: 0.6ch solid var(--color-accent);
+    animation:
+      type 1800ms steps(var(--chars)) 900ms both,
+      blink 900ms step-end infinite;
+  }
+
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry calc(var(--i, 0) * 6%) entry calc(40% + var(--i, 0) * 6%);
+    }
+  }
+}

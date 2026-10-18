@@ -10,6 +10,14 @@ const indexHtml = path.join(outDir, "index.html");
 
 let html = "";
 
+function readCss() {
+  const cssDir = path.join(outDir, "_next", "static");
+  return readdirSync(cssDir, { recursive: true })
+    .filter((f) => f.endsWith(".css"))
+    .map((f) => readFileSync(path.join(cssDir, f), "utf8"))
+    .join("\n");
+}
+
 before(() => {
   rmSync(outDir, { recursive: true, force: true });
   execSync("npm run build", { cwd: root, stdio: "inherit" });
@@ -70,12 +78,7 @@ test("stack is grouped", () => {
 });
 
 test("theme uses the MW channel yellow, not the old green", () => {
-  const cssDir = path.join(outDir, "_next", "static");
-  const css = readdirSync(cssDir, { recursive: true })
-    .filter((f) => f.endsWith(".css"))
-    .map((f) => readFileSync(path.join(cssDir, f), "utf8"))
-    .join("\n")
-    .toLowerCase();
+  const css = readCss().toLowerCase();
   assert.ok(css.includes("#ece41f"), "accent #ECE41F");
   assert.ok(!css.includes("#b8e86b"), "old green accent removed");
 });
@@ -109,4 +112,33 @@ test("location is Recife and the CTFL certification is not claimed", () => {
 test("profile photo is exported and referenced", () => {
   assert.ok(existsSync(path.join(outDir, "foto-marcio.jpg")));
   assert.match(html, /src="\/foto-marcio\.jpg"/);
+});
+
+test("skip link jumps to the main content", () => {
+  assert.match(html, /<a[^>]*href="#conteudo"[^>]*>Pular para o conteúdo<\/a>/);
+  assert.match(html, /<main[^>]*id="conteudo"/);
+});
+
+test("YouTube channel is linked in the hero and the footer", () => {
+  const links = html.match(/href="https:\/\/www\.youtube\.com\/@MW_JS_Testing"/g) ?? [];
+  assert.equal(links.length, 2);
+});
+
+test("404 page uses the MW identity", () => {
+  const notFound = readFileSync(path.join(outDir, "404.html"), "utf8");
+  assert.match(notFound, />404</);
+  assert.match(notFound, /<a[^>]*href="\/"[^>]*aria-label="Márcio Wendell, início"|<a[^>]*aria-label="Márcio Wendell, início"[^>]*href="\/"/);
+  assert.match(notFound, />Voltar ao início</);
+});
+
+test("styles cover focus, selection and motion preferences", () => {
+  const css = readCss();
+  assert.match(css, /::selection/);
+  assert.match(css, /:focus-visible/);
+  assert.match(css, /prefers-reduced-motion/);
+  assert.match(css, /animation-timeline/);
+});
+
+test("typing line keeps its full text in the HTML", () => {
+  assert.ok(html.includes("// disponível para projetos full-stack"));
 });
