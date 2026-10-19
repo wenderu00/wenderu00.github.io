@@ -147,3 +147,9 @@ test("stack has its own section in the menu", () => {
   assert.match(html, /<section id="stack"/);
   assert.match(html, /href="#stack"/);
 });
+
+test("pipeline motion graphic lists the delivery steps", () => {
+  for (const step of ["Requisito", "Teste BDD", "Código", "Deploy"]) {
+    assert.match(html, new RegExp(`>${step}<`), step);
+  }
+});

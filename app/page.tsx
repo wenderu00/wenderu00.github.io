@@ -11,6 +11,7 @@ import {
   type ProjectLink,
   type ServiceIcon,
 } from "./content";
+import { HeroBackdrop, Marquee, Pipeline, ScrollProgress } from "./motion";
 import { SectionNav } from "./section-nav";
 
 const container = "mx-auto max-w-[1200px] px-6";
@@ -92,7 +93,7 @@ function SectionTitle({ index, children }: { index: string; children: ReactNode 
     <div className="reveal flex flex-col gap-2">
       <p className="flex items-center gap-4 font-mono text-sm text-accent">
         {index}
-        <span aria-hidden="true" className="h-px flex-1 bg-line" />
+        <span aria-hidden="true" className="title-line h-px flex-1 bg-line" />
       </p>
       <h2 className="font-display text-[clamp(36px,5vw,52px)] leading-[1.05] font-bold tracking-[-0.02em]">
         {children}
@@ -122,10 +123,12 @@ export default function Home() {
           </a>
           <SectionNav />
         </div>
+        <ScrollProgress />
       </header>
 
       <main id="conteudo">
-        <section id="topo" className={`${container} flex scroll-mt-20 flex-wrap items-center gap-14 pt-[88px] pb-24`}>
+        <section id="topo" className={`${container} relative isolate flex scroll-mt-20 flex-wrap items-center gap-14 pt-[88px] pb-24`}>
+          <HeroBackdrop />
           <div className="flex min-w-0 flex-[999_1_520px] flex-col gap-7">
             <p className="hero-rise font-mono text-sm tracking-[0.04em] text-accent">
               DESENVOLVEDOR FULL-STACK · RECIFE, PE
@@ -201,6 +204,7 @@ export default function Home() {
               Desenvolvimento Tecnológico de Pernambuco, onde cuido de sistemas da Secretaria da Mulher. Em paralelo,
               sou cofundador e responsável técnico da BioQuest.
             </p>
+            <Pipeline />
             <div className="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-4">
               {services.map((service, i) => (
                 <div
@@ -236,6 +240,7 @@ export default function Home() {
             <p className="max-w-[820px] text-ink-soft">
               As ferramentas que uso no dia a dia, do front-end à infraestrutura.
             </p>
+            <Marquee items={stack.flatMap((group) => group.items)} />
             <div className="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-6">
               {stack.map((group, i) => (
                 <div key={group.group} style={stagger(i)} className="reveal flex flex-col gap-3">

@@ -69,6 +69,93 @@ body {
   }
 }
 
+@keyframes drift {
+  0%,
+  100% {
+    mask-position: 70% 30%;
+  }
+  33% {
+    mask-position: 20% 60%;
+  }
+  66% {
+    mask-position: 55% 90%;
+  }
+}
+
+@keyframes node-pulse {
+  0%,
+  18% {
+    border-color: var(--color-accent);
+    color: var(--color-ink);
+    box-shadow: 0 0 24px -4px var(--color-accent);
+  }
+  35%,
+  100% {
+    border-color: var(--color-line-strong);
+    color: var(--color-ink-soft);
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+@keyframes packet {
+  0%,
+  6% {
+    top: 0;
+    left: 0;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  25% {
+    top: 100%;
+    left: 100%;
+    opacity: 1;
+  }
+  28%,
+  100% {
+    top: 100%;
+    left: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes grow {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes progress {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.hero-backdrop {
+  background-image: radial-gradient(color-mix(in srgb, var(--color-accent) 55%, transparent) 1.2px, transparent 1.7px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(circle, #000, transparent 70%);
+  mask-size: 140% 140%;
+  mask-repeat: no-repeat;
+  mask-position: 70% 30%;
+}
+
+.pipeline-packet {
+  translate: -50% -50%;
+}
+
+.scroll-progress {
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;
@@ -91,7 +178,41 @@ body {
       blink 900ms step-end infinite;
   }
 
+  .hero-backdrop {
+    animation: drift 18s ease-in-out infinite;
+  }
+
+  .pipeline-node {
+    animation: node-pulse 4s linear calc(var(--i) * 1s) infinite;
+  }
+
+  .pipeline-packet {
+    animation: packet 4s linear calc(var(--i) * 1s) infinite;
+  }
+
+  .marquee-track {
+    animation: marquee 40s linear infinite;
+  }
+
+  .marquee:hover .marquee-track {
+    animation-play-state: paused;
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .scroll-progress {
+      animation: progress linear both;
+      animation-timeline: scroll(root);
+    }
+  }
+
   @supports (animation-timeline: view()) {
+    .title-line {
+      transform-origin: left;
+      animation: grow linear both;
+      animation-timeline: view();
+      animation-range: entry 20% cover 35%;
+    }
+
     .reveal {
       animation: rise linear both;
       animation-timeline: view();
