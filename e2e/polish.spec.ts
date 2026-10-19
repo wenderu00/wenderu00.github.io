@@ -33,6 +33,19 @@ test("hero and typing line animate by default", async ({ page }) => {
   expect(await animation(".typing")).toBe("type, blink");
 });
 
+test("motion graphics run by default", async ({ page }) => {
+  await page.goto("/");
+
+  const animation = (selector: string) =>
+    page.locator(selector).first().evaluate((el) => getComputedStyle(el).animationName);
+
+  expect(await animation(".hero-backdrop")).toBe("drift");
+  expect(await animation(".pipeline-node")).toBe("node-pulse");
+  expect(await animation(".pipeline-packet")).toBe("packet");
+  expect(await animation(".marquee-track")).toBe("marquee");
+  expect(await animation(".scroll-progress")).toBe("progress");
+});
+
 test.describe("with reduced motion", () => {
   test.use({ reducedMotion: "reduce" });
 
@@ -44,6 +57,15 @@ test.describe("with reduced motion", () => {
 
     expect(await animation("h1")).toBe("none");
     expect(await animation(".typing")).toBe("none");
+  });
+
+  test("motion graphics stay still", async ({ page }) => {
+    await page.goto("/");
+
+    for (const selector of [".hero-backdrop", ".pipeline-node", ".pipeline-packet", ".marquee-track", ".scroll-progress"]) {
+      const name = await page.locator(selector).first().evaluate((el) => getComputedStyle(el).animationName);
+      expect(name, selector).toBe("none");
+    }
   });
 });
 
