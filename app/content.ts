@@ -1,4 +1,18 @@
-export const contact = {
+export const site = {
+  url: "https://wenderu00.github.io",
+  name: "Márcio Wendell",
+  title: "Márcio Wendell · Portfólio",
+  description:
+    "Desenvolvedor full-stack em Recife (PE). Sistemas web de ponta a ponta, do Next.js ao banco de dados, com foco em testes e arquitetura.",
+};
+
+export const contact: {
+  email: string;
+  github: string;
+  youtube: string;
+  linkedin?: string;
+  cv?: string;
+} = {
   email: "marcio.wendell.contact@gmail.com",
   github: "https://github.com/wenderu00",
   youtube: "https://www.youtube.com/@MW_JS_Testing",

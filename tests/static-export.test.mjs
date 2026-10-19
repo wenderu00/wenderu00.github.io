@@ -153,3 +153,27 @@ test("pipeline motion graphic lists the delivery steps", () => {
     assert.match(html, new RegExp(`>${step}<`), step);
   }
 });
+
+test("search engines get a sitemap and robots.txt", () => {
+  const sitemap = readFileSync(path.join(outDir, "sitemap.xml"), "utf8");
+  assert.match(sitemap, /<loc>https:\/\/wenderu00\.github\.io<\/loc>/);
+  const robots = readFileSync(path.join(outDir, "robots.txt"), "utf8");
+  assert.match(robots, /Allow: \//);
+  assert.match(robots, /Sitemap: https:\/\/wenderu00\.github\.io\/sitemap\.xml/);
+});
+
+test("link previews and canonical URL are set", () => {
+  assert.match(html, /<link rel="canonical" href="https:\/\/wenderu00\.github\.io"/);
+  assert.match(html, /<meta property="og:title" content="Márcio Wendell · Portfólio"/);
+  assert.match(html, /<meta property="og:locale" content="pt_BR"/);
+  assert.match(html, /<meta name="twitter:card" content="summary_large_image"/);
+});
+
+test("structured data describes the person", () => {
+  const match = html.match(/<script type="application\/ld\+json">(.*?)<\/script>/);
+  assert.ok(match, "JSON-LD script");
+  const person = JSON.parse(match[1]);
+  assert.equal(person["@type"], "Person");
+  assert.equal(person.name, "Márcio Wendell");
+  assert.ok(person.sameAs.includes("https://github.com/wenderu00"));
+});

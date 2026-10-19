@@ -7,6 +7,7 @@ import {
   highlights,
   otherProjects,
   services,
+  site,
   stack,
   type ProjectLink,
   type ServiceIcon,
@@ -17,6 +18,21 @@ import { SectionNav } from "./section-nav";
 const container = "mx-auto max-w-[1200px] px-6";
 
 const availability = "// disponível para projetos full-stack";
+
+const person = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: site.name,
+  url: site.url,
+  image: `${site.url}/foto-marcio.jpg`,
+  email: `mailto:${contact.email}`,
+  jobTitle: "Desenvolvedor full-stack",
+  description: site.description,
+  address: { "@type": "PostalAddress", addressLocality: "Recife", addressRegion: "PE", addressCountry: "BR" },
+  alumniOf: { "@type": "CollegeOrUniversity", name: "Centro de Informática da UFPE" },
+  knowsAbout: stack.flatMap((group) => group.items),
+  sameAs: [contact.github, contact.youtube, contact.linkedin].filter(Boolean),
+};
 
 const delay = (ms: number) => ({ "--d": `${ms}ms` }) as CSSProperties;
 const stagger = (index: number) => ({ "--i": index }) as CSSProperties;
@@ -71,6 +87,17 @@ function SecondaryLink({ href, children }: { href: string; children: ReactNode }
   );
 }
 
+function ProfileLinks() {
+  return (
+    <>
+      {contact.linkedin && <SecondaryLink href={contact.linkedin}>LinkedIn</SecondaryLink>}
+      <SecondaryLink href={contact.github}>GitHub</SecondaryLink>
+      <SecondaryLink href={contact.youtube}>YouTube</SecondaryLink>
+      {contact.cv && <SecondaryLink href={contact.cv}>Baixar CV</SecondaryLink>}
+    </>
+  );
+}
+
 function ProjectLinks({ links }: { links?: ProjectLink[] }) {
   if (!links) return null;
   return (
@@ -105,6 +132,10 @@ function SectionTitle({ index, children }: { index: string; children: ReactNode 
 export default function Home() {
   return (
     <div className="min-h-screen bg-ground text-ink">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(person).replace(/</g, "\\u003c") }}
+      />
       <ConsoleGreeting />
       <a
         href="#conteudo"
@@ -142,8 +173,7 @@ export default function Home() {
             <div style={delay(350)} className="hero-rise flex flex-wrap gap-3 pt-2">
               <PrimaryLink href="#trabalhos">Ver trabalhos</PrimaryLink>
               <SecondaryLink href={`mailto:${contact.email}`}>E-mail</SecondaryLink>
-              <SecondaryLink href={contact.github}>GitHub</SecondaryLink>
-              <SecondaryLink href={contact.youtube}>YouTube</SecondaryLink>
+              <ProfileLinks />
             </div>
           </div>
           <div style={delay(450)} className="hero-rise relative max-w-[400px] flex-[1_1_300px]">
@@ -318,8 +348,7 @@ export default function Home() {
           </div>
           <div className="flex flex-wrap gap-3">
             <PrimaryLink href={`mailto:${contact.email}`}>Enviar e-mail</PrimaryLink>
-            <SecondaryLink href={contact.github}>GitHub</SecondaryLink>
-            <SecondaryLink href={contact.youtube}>YouTube</SecondaryLink>
+            <ProfileLinks />
           </div>
         </div>
       </footer>
