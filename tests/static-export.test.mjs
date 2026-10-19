@@ -142,3 +142,8 @@ test("styles cover focus, selection and motion preferences", () => {
 test("typing line keeps its full text in the HTML", () => {
   assert.ok(html.includes("// disponível para projetos full-stack"));
 });
+
+test("stack has its own section in the menu", () => {
+  assert.match(html, /<section id="stack"/);
+  assert.match(html, /href="#stack"/);
+});

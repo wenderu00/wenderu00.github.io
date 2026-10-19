@@ -4,13 +4,13 @@ test("menu marks the section on screen as current", async ({ page }) => {
   await page.goto("/#trabalhos");
   const nav = page.getByRole("navigation", { name: "Seções" });
 
-  await expect(nav.getByRole("link", { name: "03 Trabalhos" })).toHaveAttribute("aria-current", "true");
+  await expect(nav.getByRole("link", { name: "04 Trabalhos" })).toHaveAttribute("aria-current", "true");
   await expect(nav.getByRole("link", { name: "01 Quem sou eu" })).not.toHaveAttribute("aria-current", "true");
 
   await page.evaluate(() => document.getElementById("quem-sou")?.scrollIntoView({ behavior: "instant" }));
 
   await expect(nav.getByRole("link", { name: "01 Quem sou eu" })).toHaveAttribute("aria-current", "true");
-  await expect(nav.getByRole("link", { name: "03 Trabalhos" })).not.toHaveAttribute("aria-current", "true");
+  await expect(nav.getByRole("link", { name: "04 Trabalhos" })).not.toHaveAttribute("aria-current", "true");
 });
 
 test("console greets curious developers", async ({ page }) => {
