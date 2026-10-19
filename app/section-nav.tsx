@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 const items = [
   { id: "quem-sou", label: "01 Quem sou eu" },
   { id: "o-que-faco", label: "02 O que faço" },
-  { id: "trabalhos", label: "03 Trabalhos" },
+  { id: "stack", label: "03 Stack" },
+  { id: "trabalhos", label: "04 Trabalhos" },
 ];
 
 export function SectionNav() {

@@ -227,29 +227,35 @@ export default function Home() {
                 </div>
               ))}
             </div>
-            <div className="flex flex-col gap-5">
-              <p className="font-mono text-[13px] text-ink-muted">STACK</p>
-              <div className="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-6">
-                {stack.map((group, i) => (
-                  <div key={group.group} style={stagger(i)} className="reveal flex flex-col gap-3">
-                    <h3 className="font-display text-lg font-bold">{group.group}</h3>
-                    <ul aria-label={group.group} className="flex flex-wrap gap-2 font-mono text-sm">
-                      {group.items.map((tech) => (
-                        <li key={tech} className="rounded-full border border-line-strong px-3.5 py-2">
-                          {tech}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
+          </div>
+        </section>
+
+        <section id="stack" className="scroll-mt-20 border-t border-line">
+          <div className={`${container} flex flex-col gap-10 py-[88px]`}>
+            <SectionTitle index="03">Stack de tecnologias</SectionTitle>
+            <p className="max-w-[820px] text-ink-soft">
+              As ferramentas que uso no dia a dia, do front-end à infraestrutura.
+            </p>
+            <div className="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-6">
+              {stack.map((group, i) => (
+                <div key={group.group} style={stagger(i)} className="reveal flex flex-col gap-3">
+                  <h3 className="font-display text-lg font-bold">{group.group}</h3>
+                  <ul aria-label={group.group} className="flex flex-wrap gap-2 font-mono text-sm">
+                    {group.items.map((tech) => (
+                      <li key={tech} className="rounded-full border border-line-strong px-3.5 py-2">
+                        {tech}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </div>
           </div>
         </section>
 
-        <section id="trabalhos" className="scroll-mt-20 border-t border-line">
+        <section id="trabalhos" className="scroll-mt-20 border-t border-line bg-band">
           <div className={`${container} flex flex-col gap-10 py-[88px]`}>
-            <SectionTitle index="03">Trabalhos já feitos</SectionTitle>
+            <SectionTitle index="04">Trabalhos já feitos</SectionTitle>
 
             {featuredProjects.map((project) => (
               <article
