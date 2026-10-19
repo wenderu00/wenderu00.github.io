@@ -54,3 +54,35 @@ test("unknown routes show the MW 404 page", async ({ page }) => {
   await expect(page.getByText("404", { exact: true })).toBeVisible();
   await expect(page.getByRole("link", { name: "Voltar ao início" })).toHaveAttribute("href", "/");
 });
+
+test.describe("on mobile", () => {
+  test.use({ viewport: { width: 390, height: 844 } });
+
+  test("sections live behind a hamburger menu", async ({ page }) => {
+    await page.goto("/");
+    const nav = page.getByRole("navigation", { name: "Seções" });
+    const toggle = nav.getByRole("button", { name: "Abrir menu" });
+    const link = nav.getByRole("link", { name: "02 O que faço" });
+
+    await expect(link).toBeHidden();
+    await toggle.click();
+    await expect(nav.getByRole("button", { name: "Fechar menu" })).toHaveAttribute("aria-expanded", "true");
+    await expect(link).toBeVisible();
+
+    await link.click();
+    await expect(page).toHaveURL(/#o-que-faco$/);
+    await expect(link).toBeHidden();
+
+    await toggle.click();
+    await page.keyboard.press("Escape");
+    await expect(link).toBeHidden();
+  });
+});
+
+test("desktop shows sections without a hamburger", async ({ page }) => {
+  await page.goto("/");
+  const nav = page.getByRole("navigation", { name: "Seções" });
+
+  await expect(nav.getByRole("button")).toBeHidden();
+  await expect(nav.getByRole("link", { name: "02 O que faço" })).toBeVisible();
+});
