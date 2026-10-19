@@ -1,7 +1,27 @@
+export const site = {
+  url: "https://wenderu00.github.io",
+  name: "Márcio Wendell",
+  title: "Márcio Wendell · Portfólio",
+  description:
+    "Desenvolvedor full-stack em Recife (PE). Sistemas web de ponta a ponta, do Next.js ao banco de dados, com foco em testes e arquitetura.",
+};
+
+export const profile = {
+  role: "Desenvolvedor full-stack",
+  location: "Recife, PE",
+  education: "Graduando em Sistemas de Informação no CIn/UFPE",
+  tagline:
+    "Construo sistemas web de ponta a ponta, do Next.js ao banco de dados, com uma obsessão saudável por testes, arquitetura bem documentada e código que continua fácil de mudar.",
+  currentWork:
+    "Atuo como desenvolvedor full-stack (PJ) na JOIN Tecnologia, alocado no time da Secretaria de Desenvolvimento Tecnológico de Pernambuco, onde cuido de sistemas da Secretaria da Mulher. Em paralelo, sou cofundador e responsável técnico da BioQuest.",
+};
+
 export const contact = {
   email: "marcio.wendell.contact@gmail.com",
   github: "https://github.com/wenderu00",
   youtube: "https://www.youtube.com/@MW_JS_Testing",
+  linkedin: "https://www.linkedin.com/in/marcio-wendell",
+  cv: "/curriculo-marcio-wendell.pdf",
 };
 
 export type ServiceIcon = "terminal" | "shield" | "flow" | "spark";

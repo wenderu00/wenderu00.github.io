@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Márcio Wendell · Portfólio
 
-## Getting Started
+Portfólio pessoal de **Márcio Wendell**, desenvolvedor full-stack em Recife (PE).
 
-First, run the development server:
+**No ar:** [wenderu00.github.io](https://wenderu00.github.io)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+![Página inicial do portfólio](docs/screenshot.png)
+
+## Stack
+
+- [Next.js 16](https://nextjs.org) (App Router) com exportação estática (`output: "export"`)
+- React 19 e TypeScript
+- Tailwind CSS 4 com tokens de tema em `app/globals.css`
+- Playwright para testes E2E e `node:test` para testes do build
+- GitHub Actions e GitHub Pages para CI e deploy
+
+## Decisões
+
+- **Site 100% estático.** Sem servidor nem banco: o build gera HTML, CSS e imagens em `out/`, publicados no GitHub Pages.
+- **Conteúdo separado do layout.** Textos, projetos, stack e contatos ficam em `app/content.ts`; `app/page.tsx` só cuida da apresentação.
+- **Animações só em CSS.** Hero, pipeline, marquee e barra de progresso usam keyframes e `animation-timeline`, sem bibliotecas de animação, e ficam paradas com `prefers-reduced-motion`.
+- **Acessibilidade como requisito.** Link para pular ao conteúdo, foco visível, menu mobile com `aria-expanded` e contraste alto no tema escuro.
+- **Currículo gerado pelo próprio site.** A rota `/curriculo` monta o CV a partir de `app/content.ts`, e `npm run cv` imprime essa página em PDF (`out/curriculo-marcio-wendell.pdf`) com o Playwright. O PDF nunca fica desatualizado em relação ao site.
+- **SEO.** Metadados Open Graph e Twitter, dados estruturados `Person` (JSON-LD), `sitemap.xml` e `robots.txt` gerados no build.
+
+## Estrutura
+
+```
+app/
+  content.ts        conteúdo do site (contato, serviços, stack, projetos)
+  page.tsx          página única com as seções
+  section-nav.tsx   menu de seções (hambúrguer no mobile)
+  motion.tsx        motion graphics em CSS
+  curriculo/        currículo para impressão (base do PDF)
+  layout.tsx        fontes e metadados
+  sitemap.ts        sitemap.xml
+  robots.ts         robots.txt
+scripts/
+  generate-cv.mjs   gera o PDF do currículo a partir de out/curriculo.html
+e2e/                testes Playwright (navegação, animações, CV, 404)
+tests/              testes do HTML exportado
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Rodando localmente
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Requer Node.js 24.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm ci
+npm run dev        # http://localhost:3000
+```
 
-## Learn More
+## Testes
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run lint       # ESLint
+npm test           # faz o build e valida o HTML exportado em out/
+npm run cv         # gera o PDF do currículo em out/ (rode npm test antes)
+npm run test:e2e   # Playwright contra out/ (rode npm test e npm run cv antes)
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Na primeira execução dos testes E2E, instale o navegador com `npx playwright install chromium`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deploy
 
-## Deploy on Vercel
+- Todo PR para `main` roda lint, testes do build, geração do currículo e testes E2E (`.github/workflows/ci.yml`).
+- Todo push na `main` repete as verificações e publica `out/`, com o PDF do currículo, no GitHub Pages (`.github/workflows/deploy.yml`).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Contato
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- E-mail: [marcio.wendell.contact@gmail.com](mailto:marcio.wendell.contact@gmail.com)
+- LinkedIn: [marcio-wendell](https://www.linkedin.com/in/marcio-wendell)
+- GitHub: [@wenderu00](https://github.com/wenderu00)
+- YouTube: [@MW_JS_Testing](https://www.youtube.com/@MW_JS_Testing)

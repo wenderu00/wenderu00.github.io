@@ -108,3 +108,13 @@ test("desktop shows sections without a hamburger", async ({ page }) => {
   await expect(nav.getByRole("button")).toBeHidden();
   await expect(nav.getByRole("link", { name: "02 O que faço" })).toBeVisible();
 });
+
+test("CV button serves the PDF generated from the site", async ({ page, request }) => {
+  await page.goto("/");
+  const href = await page.getByRole("link", { name: "Baixar CV" }).first().getAttribute("href");
+
+  const response = await request.get(href!);
+  expect(response.status()).toBe(200);
+  expect(response.headers()["content-type"]).toContain("application/pdf");
+  expect((await response.body()).subarray(0, 5).toString()).toBe("%PDF-");
+});

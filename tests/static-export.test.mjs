@@ -42,11 +42,10 @@ test("page has the three navigable sections", () => {
   }
 });
 
-test("contact links are real and LinkedIn is not shown yet", () => {
+test("contact links are real", () => {
   assert.match(html, /href="mailto:marcio\.wendell\.contact@gmail\.com"[^>]*>E-mail</, "short e-mail button");
   assert.match(html, />marcio\.wendell\.contact@gmail\.com</, "full address shown as text");
   assert.match(html, /href="https:\/\/github\.com\/wenderu00"/);
-  assert.doesNotMatch(html, /LinkedIn/);
   assert.doesNotMatch(html, /\[(SEU|LINK)/, "no design placeholders");
 });
 
@@ -152,4 +151,41 @@ test("pipeline motion graphic lists the delivery steps", () => {
   for (const step of ["Requisito", "Teste BDD", "Código", "Deploy"]) {
     assert.match(html, new RegExp(`>${step}<`), step);
   }
+});
+
+test("search engines get a sitemap and robots.txt", () => {
+  const sitemap = readFileSync(path.join(outDir, "sitemap.xml"), "utf8");
+  assert.match(sitemap, /<loc>https:\/\/wenderu00\.github\.io<\/loc>/);
+  const robots = readFileSync(path.join(outDir, "robots.txt"), "utf8");
+  assert.match(robots, /Allow: \//);
+  assert.match(robots, /Sitemap: https:\/\/wenderu00\.github\.io\/sitemap\.xml/);
+});
+
+test("link previews and canonical URL are set", () => {
+  assert.match(html, /<link rel="canonical" href="https:\/\/wenderu00\.github\.io"/);
+  assert.match(html, /<meta property="og:title" content="Márcio Wendell · Portfólio"/);
+  assert.match(html, /<meta property="og:locale" content="pt_BR"/);
+  assert.match(html, /<meta name="twitter:card" content="summary_large_image"/);
+});
+
+test("structured data describes the person", () => {
+  const match = html.match(/<script type="application\/ld\+json">(.*?)<\/script>/);
+  assert.ok(match, "JSON-LD script");
+  const person = JSON.parse(match[1]);
+  assert.equal(person["@type"], "Person");
+  assert.equal(person.name, "Márcio Wendell");
+  assert.ok(person.sameAs.includes("https://github.com/wenderu00"));
+});
+
+test("LinkedIn and CV are linked in the hero and the footer", () => {
+  assert.equal((html.match(/href="https:\/\/www\.linkedin\.com\/in\/marcio-wendell"/g) ?? []).length, 2);
+  assert.equal((html.match(/href="\/curriculo-marcio-wendell\.pdf"/g) ?? []).length, 2);
+});
+
+test("CV page is built from the site content and kept out of search", () => {
+  const cv = readFileSync(path.join(outDir, "curriculo.html"), "utf8");
+  for (const text of ["Márcio Wendell", "Experiência e projetos", "BioQuest", "Semeadura de agentes", "Effect-TS", "linkedin.com/in/marcio-wendell"]) {
+    assert.ok(cv.includes(text), text);
+  }
+  assert.match(cv, /<meta name="robots" content="noindex"/);
 });

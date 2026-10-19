@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
+import { site } from "./content";
 import "./globals.css";
 
 const display = Bricolage_Grotesque({
@@ -21,10 +22,24 @@ const mono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://wenderu00.github.io"),
-  title: "Márcio Wendell · Portfólio",
-  description:
-    "Desenvolvedor full-stack em Recife (PE). Sistemas web de ponta a ponta, do Next.js ao banco de dados, com foco em testes e arquitetura.",
+  metadataBase: new URL(site.url),
+  title: site.title,
+  description: site.description,
+  authors: [{ name: site.name, url: site.url }],
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "profile",
+    locale: "pt_BR",
+    url: "/",
+    siteName: site.name,
+    title: site.title,
+    description: site.description,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: site.title,
+    description: site.description,
+  },
 };
 
 export const viewport: Viewport = {
