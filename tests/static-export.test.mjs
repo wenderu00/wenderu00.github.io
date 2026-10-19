@@ -42,11 +42,10 @@ test("page has the three navigable sections", () => {
   }
 });
 
-test("contact links are real and LinkedIn is not shown yet", () => {
+test("contact links are real", () => {
   assert.match(html, /href="mailto:marcio\.wendell\.contact@gmail\.com"[^>]*>E-mail</, "short e-mail button");
   assert.match(html, />marcio\.wendell\.contact@gmail\.com</, "full address shown as text");
   assert.match(html, /href="https:\/\/github\.com\/wenderu00"/);
-  assert.doesNotMatch(html, /LinkedIn/);
   assert.doesNotMatch(html, /\[(SEU|LINK)/, "no design placeholders");
 });
 
@@ -176,4 +175,17 @@ test("structured data describes the person", () => {
   assert.equal(person["@type"], "Person");
   assert.equal(person.name, "Márcio Wendell");
   assert.ok(person.sameAs.includes("https://github.com/wenderu00"));
+});
+
+test("LinkedIn and CV are linked in the hero and the footer", () => {
+  assert.equal((html.match(/href="https:\/\/www\.linkedin\.com\/in\/marcio-wendell"/g) ?? []).length, 2);
+  assert.equal((html.match(/href="\/curriculo-marcio-wendell\.pdf"/g) ?? []).length, 2);
+});
+
+test("CV page is built from the site content and kept out of search", () => {
+  const cv = readFileSync(path.join(outDir, "curriculo.html"), "utf8");
+  for (const text of ["Márcio Wendell", "Experiência e projetos", "BioQuest", "Semeadura de agentes", "Effect-TS", "linkedin.com/in/marcio-wendell"]) {
+    assert.ok(cv.includes(text), text);
+  }
+  assert.match(cv, /<meta name="robots" content="noindex"/);
 });

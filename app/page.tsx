@@ -6,6 +6,7 @@ import {
   featuredProjects,
   highlights,
   otherProjects,
+  profile,
   services,
   site,
   stack,
@@ -26,12 +27,12 @@ const person = {
   url: site.url,
   image: `${site.url}/foto-marcio.jpg`,
   email: `mailto:${contact.email}`,
-  jobTitle: "Desenvolvedor full-stack",
+  jobTitle: profile.role,
   description: site.description,
   address: { "@type": "PostalAddress", addressLocality: "Recife", addressRegion: "PE", addressCountry: "BR" },
   alumniOf: { "@type": "CollegeOrUniversity", name: "Centro de Informática da UFPE" },
   knowsAbout: stack.flatMap((group) => group.items),
-  sameAs: [contact.github, contact.youtube, contact.linkedin].filter(Boolean),
+  sameAs: [contact.linkedin, contact.github, contact.youtube],
 };
 
 const delay = (ms: number) => ({ "--d": `${ms}ms` }) as CSSProperties;
@@ -90,10 +91,10 @@ function SecondaryLink({ href, children }: { href: string; children: ReactNode }
 function ProfileLinks() {
   return (
     <>
-      {contact.linkedin && <SecondaryLink href={contact.linkedin}>LinkedIn</SecondaryLink>}
+      <SecondaryLink href={contact.linkedin}>LinkedIn</SecondaryLink>
       <SecondaryLink href={contact.github}>GitHub</SecondaryLink>
       <SecondaryLink href={contact.youtube}>YouTube</SecondaryLink>
-      {contact.cv && <SecondaryLink href={contact.cv}>Baixar CV</SecondaryLink>}
+      <SecondaryLink href={contact.cv}>Baixar CV</SecondaryLink>
     </>
   );
 }
@@ -166,10 +167,9 @@ export default function Home() {
             </p>
             <h1 className="hero-lift font-display text-[clamp(48px,7vw,92px)] leading-[0.98] font-extrabold tracking-[-0.03em]">Márcio Wendell</h1>
             <p style={delay(150)} className="hero-rise max-w-[620px] text-[21px] leading-normal text-ink-soft">
-              Construo sistemas web de ponta a ponta, do Next.js ao banco de dados, com uma obsessão saudável por
-              testes, arquitetura bem documentada e código que continua fácil de mudar.
+              {profile.tagline}
             </p>
-            <p style={delay(250)} className="hero-rise text-base text-ink-muted">Graduando em Sistemas de Informação no CIn/UFPE</p>
+            <p style={delay(250)} className="hero-rise text-base text-ink-muted">{profile.education}</p>
             <div style={delay(350)} className="hero-rise flex flex-wrap gap-3 pt-2">
               <PrimaryLink href="#trabalhos">Ver trabalhos</PrimaryLink>
               <SecondaryLink href={`mailto:${contact.email}`}>E-mail</SecondaryLink>
@@ -230,9 +230,7 @@ export default function Home() {
           <div className={`${container} flex flex-col gap-10 py-[88px]`}>
             <SectionTitle index="02">O que faço?</SectionTitle>
             <p className="max-w-[820px] text-ink-soft">
-              Atuo como desenvolvedor full-stack (PJ) na JOIN Tecnologia, alocado no time da Secretaria de
-              Desenvolvimento Tecnológico de Pernambuco, onde cuido de sistemas da Secretaria da Mulher. Em paralelo,
-              sou cofundador e responsável técnico da BioQuest.
+              {profile.currentWork}
             </p>
             <Pipeline />
             <div className="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-4">
