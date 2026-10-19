@@ -81,7 +81,7 @@ function SecondaryLink({ href, children }: { href: string; children: ReactNode }
   return (
     <a
       href={href}
-      className="inline-flex min-h-12 items-center rounded-md border border-line-strong px-5 font-medium text-ink no-underline transition-colors duration-200 hover:border-accent hover:text-accent"
+      className="inline-flex min-h-12 items-center rounded-md border border-line-strong bg-ground px-5 font-medium text-ink no-underline transition-colors duration-200 hover:border-accent hover:text-accent"
     >
       {children}
     </a>
