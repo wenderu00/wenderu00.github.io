@@ -118,3 +118,13 @@ test("CV button serves the PDF generated from the site", async ({ page, request 
   expect(response.headers()["content-type"]).toContain("application/pdf");
   expect((await response.body()).subarray(0, 5).toString()).toBe("%PDF-");
 });
+
+test("outlined buttons hide the hero dot grid behind them", async ({ page }) => {
+  await page.goto("/");
+  const background = await page
+    .locator("#topo")
+    .getByRole("link", { name: "GitHub" })
+    .evaluate((el) => getComputedStyle(el).backgroundColor);
+
+  expect(background).toBe("rgb(0, 0, 0)");
+});
