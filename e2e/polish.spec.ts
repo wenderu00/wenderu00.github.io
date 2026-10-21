@@ -40,7 +40,7 @@ test("motion graphics run by default", async ({ page }) => {
   await expect(page.locator(".hero-backdrop")).toHaveAttribute("data-live", "true");
   expect(await page.locator(".marquee-track").evaluate((el) => getComputedStyle(el).animationName)).toBe("marquee");
 
-  await page.locator("#o-que-faco figure").scrollIntoViewIfNeeded();
+  await page.locator("#o-que-faco figure:has(.pipeline-node)").scrollIntoViewIfNeeded();
   await expect(page.locator(".pipeline-node[data-active]").first()).toBeVisible();
 });
 
@@ -131,7 +131,7 @@ test.describe("with reduced motion", () => {
       const name = await page.locator(selector).first().evaluate((el) => getComputedStyle(el).animationName);
       expect(name, selector).toBe("none");
     }
-    await page.locator("#o-que-faco figure").scrollIntoViewIfNeeded();
+    await page.locator("#o-que-faco figure:has(.pipeline-node)").scrollIntoViewIfNeeded();
     await page.waitForTimeout(1500);
     await expect(page.locator(".pipeline-node[data-active]")).toHaveCount(0);
     await expect(page.locator("#topo canvas")).toHaveCount(0);

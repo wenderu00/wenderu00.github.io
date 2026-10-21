@@ -25,6 +25,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run lint
+      - run: npm run test:unit
+      - run: npm run test:mutation
       - run: npm test
       - run: npx playwright install --with-deps chromium
       - run: npm run cv
