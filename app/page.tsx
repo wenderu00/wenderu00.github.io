@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type { CSSProperties, ReactNode } from "react";
 import { ConsoleGreeting } from "./console-greeting";
+import { MateOMutante } from "./mate-o-mutante/mate-o-mutante";
 import {
   contact,
   featuredProjects,
@@ -267,6 +268,7 @@ export default function Home() {
                 </Reveal>
               ))}
             </div>
+            <MateOMutante />
           </div>
         </section>
 

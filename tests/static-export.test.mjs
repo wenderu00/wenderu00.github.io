@@ -192,3 +192,20 @@ test("CV page is built from the site content and kept out of search", () => {
   }
   assert.match(cv, /<meta name="robots" content="noindex"/);
 });
+
+test("mutant game ships its code, controls and live region in the static HTML", () => {
+  const game = html.slice(html.indexOf("Mate o mutante"));
+  assert.match(game, /<code[^>]*>if \(saldo (<!-- -->)?&gt;=(<!-- -->)? preco\) liberarModulo\(\)<\/code>/);
+  assert.match(game, /<button[^>]*>Injetar mutante<\/button>/);
+  assert.match(game, /<button[^>]*>Reiniciar<\/button>/);
+  assert.match(game, /aria-live="polite"/);
+  assert.match(game, /Mutation score/);
+});
+
+test("the page never uses an em dash", () => {
+  assert.ok(!html.includes("—"));
+});
+
+test("the Rive runtime is served by the site itself", () => {
+  assert.ok(existsSync(path.join(outDir, "rive", "rive.wasm")));
+});

@@ -43,3 +43,11 @@ next-env.d.ts
 # playwright
 /test-results/
 /playwright-report/
+/.features-gen/
+
+# rive runtime, copied from node_modules at build time
+/public/rive/rive.wasm
+
+# stryker
+/reports/
+.stryker-tmp/
