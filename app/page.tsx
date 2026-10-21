@@ -13,8 +13,10 @@ import {
   type ProjectLink,
   type ServiceIcon,
 } from "./content";
-import { HeroBackdrop, Marquee, Pipeline, ScrollProgress } from "./motion";
+import { HeroBackdrop, Magnetic, Marquee, Pipeline, Reveal, ScrambleHeading, ScrollProgress, TitleLine } from "./motion";
 import { SectionNav } from "./section-nav";
+import { SeedGarden } from "./seed-garden";
+import { StackFilter } from "./stack-filter";
 
 const container = "mx-auto max-w-[1200px] px-6";
 
@@ -36,7 +38,6 @@ const person = {
 };
 
 const delay = (ms: number) => ({ "--d": `${ms}ms` }) as CSSProperties;
-const stagger = (index: number) => ({ "--i": index }) as CSSProperties;
 
 const iconPaths: Record<ServiceIcon, ReactNode> = {
   terminal: (
@@ -68,12 +69,14 @@ const iconPaths: Record<ServiceIcon, ReactNode> = {
 
 function PrimaryLink({ href, children }: { href: string; children: ReactNode }) {
   return (
-    <a
-      href={href}
-      className="inline-flex min-h-12 items-center rounded-md bg-accent px-6 font-semibold text-ground no-underline transition-colors duration-200 hover:bg-accent-hover"
-    >
-      {children}
-    </a>
+    <Magnetic>
+      <a
+        href={href}
+        className="inline-flex min-h-12 items-center rounded-md bg-accent px-6 font-semibold text-ground no-underline transition-colors duration-200 hover:bg-accent-hover"
+      >
+        {children}
+      </a>
+    </Magnetic>
   );
 }
 
@@ -118,15 +121,15 @@ function ProjectLinks({ links }: { links?: ProjectLink[] }) {
 
 function SectionTitle({ index, children }: { index: string; children: ReactNode }) {
   return (
-    <div className="reveal flex flex-col gap-2">
+    <Reveal className="flex flex-col gap-2">
       <p className="flex items-center gap-4 font-mono text-sm text-accent">
         {index}
-        <span aria-hidden="true" className="title-line h-px flex-1 bg-line" />
+        <TitleLine />
       </p>
       <h2 className="font-display text-[clamp(36px,5vw,52px)] leading-[1.05] font-bold tracking-[-0.02em]">
         {children}
       </h2>
-    </div>
+    </Reveal>
   );
 }
 
@@ -165,7 +168,10 @@ export default function Home() {
             <p className="hero-rise font-mono text-sm tracking-[0.04em] text-accent">
               DESENVOLVEDOR FULL-STACK · RECIFE, PE
             </p>
-            <h1 className="hero-lift font-display text-[clamp(48px,7vw,92px)] leading-[0.98] font-extrabold tracking-[-0.03em]">Márcio Wendell</h1>
+            <ScrambleHeading
+              text="Márcio Wendell"
+              className="hero-lift font-display text-[clamp(48px,7vw,92px)] leading-[0.98] font-extrabold tracking-[-0.03em]"
+            />
             <p style={delay(150)} className="hero-rise max-w-[620px] text-[21px] leading-normal text-ink-soft">
               {profile.tagline}
             </p>
@@ -215,12 +221,13 @@ export default function Home() {
                 pipelines e geradores) que continuam gerando valor sem custo recorrente.
               </p>
             </div>
+            <SeedGarden />
             <div className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-3">
               {highlights.map((item, i) => (
-                <div key={item.label} style={stagger(i)} className="reveal rounded-lg border border-line bg-surface p-5">
+                <Reveal key={item.label} index={i} className="rounded-lg border border-line bg-surface p-5">
                   <p className="font-mono text-[13px] text-ink-muted">{item.label}</p>
                   <p className="mt-1.5 font-semibold text-ink">{item.value}</p>
-                </div>
+                </Reveal>
               ))}
             </div>
           </div>
@@ -235,10 +242,11 @@ export default function Home() {
             <Pipeline />
             <div className="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-4">
               {services.map((service, i) => (
-                <div
+                <Reveal
                   key={service.title}
-                  style={stagger(i)}
-                  className="reveal flex flex-col gap-3 rounded-[10px] border border-line bg-surface p-7 transition duration-200 hover:-translate-y-1 hover:border-accent"
+                  index={i}
+                  tilt
+                  className="flex flex-col gap-3 rounded-[10px] border border-line bg-surface p-7 transition duration-200 hover:-translate-y-1 hover:border-accent"
                 >
                   <svg
                     aria-hidden="true"
@@ -256,7 +264,7 @@ export default function Home() {
                   </svg>
                   <h3 className="font-display text-[22px] font-bold">{service.title}</h3>
                   <p className="text-base text-ink-muted">{service.text}</p>
-                </div>
+                </Reveal>
               ))}
             </div>
           </div>
@@ -269,20 +277,7 @@ export default function Home() {
               As ferramentas que uso no dia a dia, do front-end à infraestrutura.
             </p>
             <Marquee items={stack.flatMap((group) => group.items)} />
-            <div className="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-6">
-              {stack.map((group, i) => (
-                <div key={group.group} style={stagger(i)} className="reveal flex flex-col gap-3">
-                  <h3 className="font-display text-lg font-bold">{group.group}</h3>
-                  <ul aria-label={group.group} className="flex flex-wrap gap-2 font-mono text-sm">
-                    {group.items.map((tech) => (
-                      <li key={tech} className="rounded-full border border-line-strong px-3.5 py-2">
-                        {tech}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
+            <StackFilter />
           </div>
         </section>
 
@@ -291,9 +286,10 @@ export default function Home() {
             <SectionTitle index="04">Trabalhos já feitos</SectionTitle>
 
             {featuredProjects.map((project) => (
-              <article
+              <Reveal
+                as="article"
                 key={project.title}
-                className="reveal flex flex-col gap-6 rounded-xl border border-line bg-surface p-[clamp(24px,4vw,40px)] transition-colors duration-200 hover:border-accent"
+                className="flex flex-col gap-6 rounded-xl border border-line bg-surface p-[clamp(24px,4vw,40px)] transition-colors duration-200 hover:border-accent"
               >
                 <div className="flex flex-col gap-2">
                   <p className="font-mono text-[13px] text-accent">{project.kicker}</p>
@@ -313,22 +309,24 @@ export default function Home() {
                     <ProjectLinks links={project.links} />
                   </div>
                 </div>
-              </article>
+              </Reveal>
             ))}
 
             <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-4">
               {otherProjects.map((project, i) => (
-                <article
+                <Reveal
+                  as="article"
                   key={project.title}
-                  style={stagger(i % 3)}
-                  className="reveal flex flex-col gap-2.5 rounded-xl border border-line p-7 transition duration-200 hover:-translate-y-1 hover:border-accent"
+                  index={i % 3}
+                  tilt
+                  className="flex flex-col gap-2.5 rounded-xl border border-line p-7 transition duration-200 hover:-translate-y-1 hover:border-accent"
                 >
                   <p className="font-mono text-[13px] text-accent">{project.kicker}</p>
                   <h3 className="font-display text-2xl font-bold">{project.title}</h3>
                   <p className="text-base text-ink-soft">{project.text}</p>
                   <p className="mt-auto pt-2 font-mono text-[13px] text-ink-muted">{project.tech}</p>
                   <ProjectLinks links={project.links} />
-                </article>
+                </Reveal>
               ))}
             </div>
           </div>

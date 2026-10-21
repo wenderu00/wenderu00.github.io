@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { MutantHunt } from "./mutant-hunt";
 
 export const metadata: Metadata = {
   title: "Página não encontrada · Márcio Wendell",
@@ -18,7 +19,10 @@ export default function NotFound() {
       <p className="font-display text-[clamp(96px,20vw,200px)] leading-none font-extrabold tracking-[-0.04em] text-accent">
         404
       </p>
-      <p className="font-mono text-ink-muted">{"// esta rota não existe"}</p>
+      <div className="flex flex-col gap-2">
+        <p className="font-mono text-ink-muted">{"// esta rota não existe"}</p>
+        <MutantHunt />
+      </div>
       <Link
         href="/"
         className="inline-flex min-h-12 items-center self-start rounded-md bg-accent px-6 font-semibold text-ground no-underline transition-colors duration-200 hover:bg-accent-hover"

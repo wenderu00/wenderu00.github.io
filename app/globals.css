@@ -82,59 +82,9 @@ body {
   }
 }
 
-@keyframes node-pulse {
-  0%,
-  18% {
-    border-color: var(--color-accent);
-    color: var(--color-ink);
-    box-shadow: 0 0 24px -4px var(--color-accent);
-  }
-  35%,
-  100% {
-    border-color: var(--color-line-strong);
-    color: var(--color-ink-soft);
-    box-shadow: 0 0 0 0 transparent;
-  }
-}
-
-@keyframes packet {
-  0%,
-  6% {
-    top: 0;
-    left: 0;
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
-  }
-  25% {
-    top: 100%;
-    left: 100%;
-    opacity: 1;
-  }
-  28%,
-  100% {
-    top: 100%;
-    left: 100%;
-    opacity: 0;
-  }
-}
-
 @keyframes marquee {
   to {
     transform: translateX(-50%);
-  }
-}
-
-@keyframes grow {
-  from {
-    transform: scaleX(0);
-  }
-}
-
-@keyframes progress {
-  to {
-    transform: scaleX(1);
   }
 }
 
@@ -149,11 +99,6 @@ body {
 
 .pipeline-packet {
   translate: -50% -50%;
-}
-
-.scroll-progress {
-  transform: scaleX(0);
-  transform-origin: left;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -182,42 +127,12 @@ body {
     animation: drift 18s ease-in-out infinite;
   }
 
-  .pipeline-node {
-    animation: node-pulse 4s linear calc(var(--i) * 1s) infinite;
-  }
-
-  .pipeline-packet {
-    animation: packet 4s linear calc(var(--i) * 1s) infinite;
-  }
-
   .marquee-track {
     animation: marquee 40s linear infinite;
   }
 
   .marquee:hover .marquee-track {
     animation-play-state: paused;
-  }
-
-  @supports (animation-timeline: scroll()) {
-    .scroll-progress {
-      animation: progress linear both;
-      animation-timeline: scroll(root);
-    }
-  }
-
-  @supports (animation-timeline: view()) {
-    .title-line {
-      transform-origin: left;
-      animation: grow linear both;
-      animation-timeline: view();
-      animation-range: entry 20% cover 35%;
-    }
-
-    .reveal {
-      animation: rise linear both;
-      animation-timeline: view();
-      animation-range: entry calc(var(--i, 0) * 6%) entry calc(40% + var(--i, 0) * 6%);
-    }
   }
 }
 
@@ -229,5 +144,9 @@ body {
 @media print {
   body {
     background: #fff;
+  }
+
+  [data-pixi] {
+    display: none;
   }
 }

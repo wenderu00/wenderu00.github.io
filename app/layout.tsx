@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import { site } from "./content";
+import { MotionProvider } from "./motion-provider";
 import "./globals.css";
 
 const display = Bricolage_Grotesque({
@@ -53,7 +54,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="pt-BR"
       className={`${display.variable} ${sans.variable} ${mono.variable} antialiased`}
     >
-      <body>{children}</body>
+      <body>
+        <MotionProvider>{children}</MotionProvider>
+      </body>
     </html>
   );
 }

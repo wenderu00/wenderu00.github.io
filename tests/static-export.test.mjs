@@ -135,7 +135,10 @@ test("styles cover focus, selection and motion preferences", () => {
   assert.match(css, /::selection/);
   assert.match(css, /:focus-visible/);
   assert.match(css, /prefers-reduced-motion/);
-  assert.match(css, /animation-timeline/);
+});
+
+test("canvas scenes are hidden when printing", () => {
+  assert.match(readCss(), /@media print\{[^@]*\[data-pixi\]\{display:none/);
 });
 
 test("typing line keeps its full text in the HTML", () => {
