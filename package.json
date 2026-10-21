@@ -12,7 +12,9 @@
     "cv": "node scripts/generate-cv.mjs"
   },
   "dependencies": {
+    "motion": "^14.5.0",
     "next": "16.4.2",
+    "pixi.js": "^8.22.0",
     "react": "19.3.0",
     "react-dom": "19.3.0"
   },

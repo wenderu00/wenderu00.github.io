@@ -1,5 +1,6 @@
 "use client";
 
+import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 
 const items = [
@@ -52,23 +53,47 @@ export function SectionNav() {
           {open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
         </svg>
       </button>
-      <ul
-        id="menu-secoes"
-        className={`${open ? "flex" : "hidden"} absolute inset-x-0 top-full flex-col border-b border-line bg-ground px-3 py-2 md:static md:flex md:flex-row md:gap-1 md:border-0 md:p-0`}
-      >
-        {items.map((item) => (
-          <li key={item.id}>
-            <a
-              href={`#${item.id}`}
-              aria-current={active === item.id ? "true" : undefined}
-              onClick={() => setOpen(false)}
-              className="block p-3 font-mono text-sm text-ink-muted no-underline transition-colors duration-200 hover:text-accent aria-[current=true]:text-accent"
-            >
-              {item.label}
-            </a>
-          </li>
-        ))}
+      <ul className="hidden md:flex md:flex-row md:gap-1">
+        <Links active={active} indicator="nav-indicator" />
       </ul>
+      <AnimatePresence>
+        {open && (
+          <motion.ul
+            id="menu-secoes"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="absolute inset-x-0 top-full flex flex-col border-b border-line bg-ground px-3 py-2 md:hidden"
+          >
+            <Links active={active} indicator="nav-indicator-mobile" onNavigate={() => setOpen(false)} />
+          </motion.ul>
+        )}
+      </AnimatePresence>
     </nav>
   );
+}
+
+function Links({ active, indicator, onNavigate }: { active: string | null; indicator: string; onNavigate?: () => void }) {
+  return items.map((item) => (
+    <li key={item.id}>
+      <a
+        href={`#${item.id}`}
+        aria-current={active === item.id ? "true" : undefined}
+        onClick={onNavigate}
+        className="relative block p-3 font-mono text-sm text-ink-muted no-underline transition-colors duration-200 hover:text-accent aria-[current=true]:text-accent"
+      >
+        {item.label}
+        {active === item.id && (
+          <motion.span
+            layoutId={indicator}
+            data-nav-indicator
+            aria-hidden="true"
+            transition={{ type: "spring", stiffness: 380, damping: 32 }}
+            className="absolute inset-x-3 bottom-1.5 h-0.5 bg-accent"
+          />
+        )}
+      </a>
+    </li>
+  ));
 }
