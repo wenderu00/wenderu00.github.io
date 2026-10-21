@@ -43,3 +43,10 @@ next-env.d.ts
 # playwright
 /test-results/
 /playwright-report/
+
+# mutation testing
+/reports/
+.stryker-tmp/
+
+# playwright-bdd
+/.features-gen/

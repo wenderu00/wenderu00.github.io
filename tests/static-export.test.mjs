@@ -192,3 +192,17 @@ test("CV page is built from the site content and kept out of search", () => {
   }
   assert.match(cv, /<meta name="robots" content="noindex"/);
 });
+
+test("mutant game ships its code as real text and leaves GSAP out of the first load", () => {
+  assert.match(html, /data-mate-o-mutante/);
+  assert.match(html, /<code data-codigo="true">if \(saldo &gt;= preco\) liberarModulo\(\)<\/code>/);
+  const scripts = [...html.matchAll(/src="(\/_next\/static\/chunks\/[^"]+\.js)"/g)].map((m) => m[1]);
+  assert.ok(scripts.length > 0, "initial scripts");
+  for (const src of scripts) {
+    assert.doesNotMatch(readFileSync(path.join(outDir, src), "utf8"), /morphSVG/, `${src} must not bundle GSAP`);
+  }
+});
+
+test("interface copy never uses an em dash", () => {
+  assert.doesNotMatch(html, /—/);
+});
